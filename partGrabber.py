@@ -5,8 +5,11 @@
 import requests
 from bs4 import BeautifulSoup
 import openpyxl
+from openpyxl import Workbook
 from datetime import datetime
 from urllib.parse import urljoin, unquote, urlparse, parse_qs
+import pandas as pd
+import os
 
 def scrape_product_info(url):
     try:
@@ -105,7 +108,7 @@ def save_to_excel(data, file_path):
             # If file doesn't exist, create new workbook
             wb = openpyxl.Workbook()
             sheet = wb.active
-            sheet.append(["Product Title", "Image URL", "Product URL", "Date Added"])
+            sheet.append(["Product Name", "Image URL", "Product URL", "Image"])
         except Exception as e:
             print(f"Error loading/creating Excel file {file_path}: {e}")
             return
@@ -115,9 +118,9 @@ def save_to_excel(data, file_path):
             data.get('title', 'N/A'),
             data.get('image_url', 'N/A'),
             data.get('product_url', 'N/A'),
-            datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         ])
-
+        # Assign the IMAGE formula to the cell in the 5th column of the newly added row
+        sheet.cell(row=sheet.max_row, column=4).value = "=IMAGE(B" + str(sheet.max_row) + ")"
         # Save workbook
         wb.save(file_path)
         print(f"Data successfully saved to {file_path}")
@@ -128,7 +131,7 @@ def save_to_excel(data, file_path):
 if __name__ == "__main__":
     # Define paths
     links_excel_path = "BOP.xlsx"  # Input file with links
-    output_excel_path = "BOP_output_urls.xlsx"  # Output file for URLs
+    output_excel_path = "BOP_output_urlsNEW.xlsx"  # Output file for URLs
 
     try:
         # Load the workbook and select the active sheet
