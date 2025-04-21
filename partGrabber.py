@@ -131,7 +131,7 @@ def save_to_excel(data, file_path):
 if __name__ == "__main__":
     # Define paths
     links_excel_path = "BOP.xlsx"  # Input file with links
-    output_excel_path = "BOP_output_urlsNEW.xlsx"  # Output file for URLs
+    output_excel_path = "BOP_output_urlsNEW2.xlsx"  # Output file for URLs
 
     try:
         # Load the workbook and select the active sheet
